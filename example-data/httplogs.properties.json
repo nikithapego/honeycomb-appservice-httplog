@@ -1,0 +1,18 @@
+{
+    "UserAgent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/101.0.4951.54 Safari\/537.36 Edg\/101.0.1210.39",
+    "Cookie": "--",
+    "ScStatus": "200",
+    "CsUsername": "-",
+    "Result": "Success",
+    "CsHost": "test-site.scm.azurewebsites.net",
+    "CsMethod": "GET",
+    "CsBytes": "1635",
+    "CsUriQuery": "_=1652036313179",
+    "CIp": "200.154.11.145",
+    "SPort": "80",
+    "Referer": "-",
+    "CsUriStem": "\/api\/vfs\/site\/wwwroot\/",
+    "TimeTaken": 19619,
+    "ScBytes": "494",
+    "ComputerName": "10-30-0-173"
+}
