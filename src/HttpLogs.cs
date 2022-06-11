@@ -57,7 +57,6 @@ namespace Honeycomb.AppService
             }
 
             await _honeycombService.Flush();
-            log.LogInformation("APIKey: {apiKey}", _apiSettings.Value.WriteKey);
             log.LogInformation("Processed {eventsProcessed}", eventsProcessed);
 
             if (exceptions.Count > 1)
