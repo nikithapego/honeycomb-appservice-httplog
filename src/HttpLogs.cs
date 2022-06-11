@@ -40,11 +40,11 @@ namespace Honeycomb.AppService
                         var logLine = JsonSerializer.Deserialize<HttpLogProperties>(httpLog.properties);
 
                         var ev = new HoneycombEvent();
-                        ev.DataSetName = DataSetName;
                         ev.EventTime = httpLog.time;
 
                         ev.ApplyAzureResourceProperties(httpLog);
                         ev.ApplyLogLineProperties(logLine);
+                        ev.DataSetName = $"{DataSetName}-{ev.Data["azure.appservice_name"]}";
 
                         _honeycombService.QueueEvent(ev);
                         eventsProcessed++;
