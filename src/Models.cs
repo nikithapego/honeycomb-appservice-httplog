@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using Azure.Core;
 using Honeycomb.Models;
 
 namespace Honeycomb.AppService;
@@ -69,9 +69,20 @@ public static class HoneycombEventExtensions
     
     public static void ApplyAzureResourceProperties(this HoneycombEvent ev, HttpLogRecord logRecord)
     {
-        var segments = logRecord.resourceId.Split("/");
-        ev.Data.Add("azure.subscription", segments[2]);
-        ev.Data.Add("azure.resource_group", segments[4]);
-        ev.Data.Add("azure.appservice_name", segments.Last());
+
+        var resourceId = new ResourceIdentifier(logRecord.resourceId);
+        ev.Data.AddIfNotNull("azure.subscription", resourceId.SubscriptionId);
+        ev.Data.AddIfNotNull("azure.resource_group", resourceId.ResourceGroupName);
+        ev.Data.AddIfNotNull("azure.appservice_name", resourceId.Name);
+        ev.Data.AddIfNotNull("azure.resource_type", resourceId.ResourceType);
+        ev.Data.AddIfNotNull("azure.location", resourceId.Location);
+        ev.Data.AddIfNotNull("azure.provider", resourceId.Provider);
+        ev.Data.AddIfNotNull("azure.resource_parent", resourceId.Parent);
+    }
+
+    public static void AddIfNotNull(this Dictionary<string, object> dict, string name, object value)
+    {
+        if (value != null)
+            dict.Add(name, value);
     }
 }
