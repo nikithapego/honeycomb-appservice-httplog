@@ -25,7 +25,7 @@ namespace Honeycomb.AppService
         }
 
         [FunctionName("HttpLogs")]
-        public async Task Run([EventHubTrigger("%EventHub:Name%", Connection = "AppServiceDiagnosticsHub")] EventData[] events, ILogger log)
+        public async Task Run([EventHubTrigger("%EventHubName%", Connection = "AppServiceEventHubNamespace")] EventData[] events, ILogger log)
         {
             var exceptions = new List<Exception>();
             int eventsProcessed = 0;
