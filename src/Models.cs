@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using Azure.Core;
 using Honeycomb.Models;
 
 namespace Honeycomb.AppService;
@@ -65,13 +65,36 @@ public static class HoneycombEventExtensions
         ev.Data.Add("http.user_agent", properties.UserAgent);
         ev.Data.Add("http.result", properties.Result);
         ev.Data.Add("http.referer", properties.Referer);
+        ev.Data.Add("net.host.name", properties.ComputerName);
+        ev.Data.Add("http.path", properties.CsUriStem);
+        ev.Data.Add("http.request_content_length", int.Parse(properties.CsBytes));
+        ev.Data.Add("http.response_content_length", int.Parse(properties.ScBytes));
+        if (properties.CsUsername != "-")
+            ev.Data.Add("enduser.id", properties.CsUsername);
     }
     
     public static void ApplyAzureResourceProperties(this HoneycombEvent ev, HttpLogRecord logRecord)
     {
-        var segments = logRecord.resourceId.Split("/");
-        ev.Data.Add("azure.subscription", segments[2]);
-        ev.Data.Add("azure.resource_group", segments[4]);
-        ev.Data.Add("azure.appservice_name", segments.Last());
+
+        var resourceId = new ResourceIdentifier(logRecord.resourceId);
+        ev.Data.AddIfNotNull("azure.subscription", resourceId.SubscriptionId);
+        ev.Data.AddIfNotNull("azure.resource_group", resourceId.ResourceGroupName);
+        ev.Data.AddIfNotNull("azure.appservice_name", resourceId.Name);
+        ev.Data.AddIfNotNull("azure.resource_type", resourceId.ResourceType);
+        ev.Data.AddIfNotNull("azure.location", resourceId.Location);
+        ev.Data.AddIfNotNull("azure.provider", resourceId.Provider);
+        ev.Data.AddIfNotNull("azure.resource_parent", resourceId.Parent);
+
+        ev.Data.Add("net.host.ip", logRecord.EventIpAddress);
+        ev.Data.Add("azure.log_category", logRecord.category);
+        ev.Data.Add("azure.event_stamp_type", logRecord.EventStampType);
+        ev.Data.Add("azure.event_stamp_name", logRecord.EventStampName);
+        ev.Data.Add("azure.event_primary_stamp_name", logRecord.EventPrimaryStampName);
+    }
+
+    public static void AddIfNotNull(this Dictionary<string, object> dict, string name, object value)
+    {
+        if (value != null)
+            dict.Add(name, value);
     }
 }
