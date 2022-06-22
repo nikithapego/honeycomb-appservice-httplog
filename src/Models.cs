@@ -67,6 +67,7 @@ public static class HoneycombEventExtensions
         ev.Data.Add("http.referer", properties.Referer);
         ev.Data.Add("net.host.name", properties.ComputerName);
         ev.Data.Add("http.path", properties.CsUriStem);
+        ev.Data.Add("http.query", properties.CsUriQuery);
         ev.Data.Add("http.request_content_length", int.Parse(properties.CsBytes));
         ev.Data.Add("http.response_content_length", int.Parse(properties.ScBytes));
         if (properties.CsUsername != "-")
@@ -77,8 +78,9 @@ public static class HoneycombEventExtensions
     {
 
         var resourceId = new ResourceIdentifier(logRecord.resourceId);
-        ev.Data.AddIfNotNull("azure.subscription", resourceId.SubscriptionId);
-        ev.Data.AddIfNotNull("azure.resource_group", resourceId.ResourceGroupName);
+        ev.Data.Add("azure.resource_id", logRecord.resourceId);
+        ev.Data.AddIfNotNull("azure.subscription_id", resourceId.SubscriptionId);
+        ev.Data.AddIfNotNull("azure.resource_group_name", resourceId.ResourceGroupName);
         ev.Data.AddIfNotNull("azure.appservice_name", resourceId.Name);
         ev.Data.AddIfNotNull("azure.resource_type", resourceId.ResourceType);
         ev.Data.AddIfNotNull("azure.location", resourceId.Location);
