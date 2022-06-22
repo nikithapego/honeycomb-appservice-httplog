@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Honeycomb.Models;
@@ -37,22 +38,42 @@ namespace Honeycomb.AppService
                     var httplogs = await JsonSerializer.DeserializeAsync<IngestRecords<HttpLogRecord>>(stream);
                     foreach (var httpLog in httplogs.records)
                     {
-                        var logLine = JsonSerializer.Deserialize<HttpLogProperties>(httpLog.properties);
+                        try
+                        {
 
-                        var ev = new HoneycombEvent();
-                        ev.EventTime = httpLog.time;
+                            var logLine = JsonSerializer.Deserialize<HttpLogProperties>(httpLog.properties);
 
-                        ev.ApplyAzureResourceProperties(httpLog);
-                        ev.ApplyLogLineProperties(logLine);
-                        ev.DataSetName = $"{DataSetName}-{ev.Data["azure.appservice_name"]}";
+                            var ev = new HoneycombEvent
+                            {
+                                EventTime = httpLog.time
+                            };
 
-                        _honeycombService.QueueEvent(ev);
-                        eventsProcessed++;
+                            ev.ApplyAzureResourceProperties(httpLog);
+                            ev.ApplyLogLineProperties(logLine);
+                            ev.DataSetName = $"{DataSetName}-{ev.Data["azure.appservice_name"]}";
+
+                            _honeycombService.QueueEvent(ev);
+                            eventsProcessed++;
+                        }
+                        catch (Exception ex)
+                        {
+                            exceptions.Add(ex);
+                            if (bool.TryParse(Environment.GetEnvironmentVariable("OUTPUT_FAILED_LOGS_TO_LOG"), out var logOutput) &&
+                                logOutput)
+                            {
+                                log.LogInformation($"Failed HttpLog: {Encoding.UTF8.GetString(eventData.Body)}");
+                            }
+                        }
                     }
                 }
                 catch (Exception e)
                 {
                     exceptions.Add(e);
+                    if (bool.TryParse(Environment.GetEnvironmentVariable("OUTPUT_FAILED_LOGS_TO_LOG"), out var logOutput) &&
+                        logOutput)
+                    {
+                        log.LogInformation($"Failed EventData: {Encoding.UTF8.GetString(eventData.Body)}");
+                    }
                 }
             }
 
