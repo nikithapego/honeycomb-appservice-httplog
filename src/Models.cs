@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using Azure.Core;
 using Honeycomb.Models;
 
@@ -15,7 +16,8 @@ public class HttpLogRecord
     public string category { get; set; }
     public DateTime time { get; set; }
     public string resourceId { get; set; }
-    public string properties { get; set; }
+    [JsonConverter(typeof(LogPropertiesConvertor))]
+    public HttpLogProperties properties { get; set; }
     public string EventStampType { get; set; }
     public string EventPrimaryStampName { get; set; }
     public string EventStampName { get; set; }
