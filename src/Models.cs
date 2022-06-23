@@ -82,7 +82,7 @@ public static class HoneycombEventExtensions
         ev.Data.AddIfNotNull("azure.subscription_id", resourceId.SubscriptionId);
         ev.Data.AddIfNotNull("azure.resource_group_name", resourceId.ResourceGroupName);
         ev.Data.AddIfNotNull("azure.appservice_name", resourceId.Name);
-        ev.Data.AddIfNotNull("azure.resource_type", resourceId.ResourceType);
+        ev.Data.AddIfNotNull("azure.resource_type", resourceId.ResourceType.ToString());
         ev.Data.AddIfNotNull("azure.location", resourceId.Location);
         ev.Data.AddIfNotNull("azure.provider", resourceId.Provider);
         ev.Data.AddIfNotNull("azure.resource_parent", resourceId.Parent);

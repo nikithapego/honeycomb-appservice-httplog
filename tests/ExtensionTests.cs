@@ -20,8 +20,8 @@ public class ExtensionTests
         validEvent.ApplyAzureResourceProperties(logRecord);
 
         Assert.Equal(subscriptionId, validEvent.Data["azure.subscription_id"]);
-        Assert.Equal(resourceGroup, validEvent.Data["azure.resource_group"]);
-        Assert.Equal(siteName, validEvent.Data["azure.resource_name"]);
+        Assert.Equal(resourceGroup, validEvent.Data["azure.resource_group_name"]);
+        Assert.Equal(siteName, validEvent.Data["azure.appservice_name"]);
         Assert.Equal(resource_type, validEvent.Data["azure.resource_type"]);
     }
 }
