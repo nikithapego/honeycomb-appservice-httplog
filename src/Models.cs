@@ -29,19 +29,22 @@ public class HttpLogProperties
 {
     public string UserAgent { get; set; }
     public string Cookie { get; set; }
-    public string ScStatus { get; set; }
+    [JsonConverter(typeof(StringToIntConvertor))]
+    public int ScStatus { get; set; }
     public string CsUsername { get; set; }
     public string Result { get; set; }
     public string CsHost { get; set; }
     public string CsMethod { get; set; }
-    public string CsBytes { get; set; }
+    [JsonConverter(typeof(StringToIntConvertor))]
+    public int CsBytes { get; set; }
     public string CsUriQuery { get; set; }
     public string CIp { get; set; }
     public string SPort { get; set; }
     public string Referer { get; set; }
     public string CsUriStem { get; set; }
     public int TimeTaken { get; set; }
-    public string ScBytes { get; set; }
+    [JsonConverter(typeof(StringToIntConvertor))]
+    public int ScBytes { get; set; }
     public string ComputerName { get; set; }
 }
 
@@ -60,7 +63,7 @@ public static class HoneycombEventExtensions
         ev.Data.Add("duration_ms", properties.TimeTaken);
         ev.Data.Add("http.url", urlBuilder.ToString());
         ev.Data.Add("http.port", properties.SPort);
-        ev.Data.Add("http.status_code", int.Parse(properties.ScStatus));
+        ev.Data.Add("http.status_code", properties.ScStatus);
         ev.Data.Add("net.peer.ip", properties.CIp);
         ev.Data.Add("http.host", properties.CsHost);
         ev.Data.Add("http.method", properties.CsMethod);
@@ -70,8 +73,8 @@ public static class HoneycombEventExtensions
         ev.Data.Add("net.host.name", properties.ComputerName);
         ev.Data.Add("http.path", properties.CsUriStem);
         ev.Data.Add("http.query", properties.CsUriQuery);
-        ev.Data.Add("http.request_content_length", int.Parse(properties.CsBytes));
-        ev.Data.Add("http.response_content_length", int.Parse(properties.ScBytes));
+        ev.Data.Add("http.request_content_length", properties.CsBytes);
+        ev.Data.Add("http.response_content_length", properties.ScBytes);
         if (properties.CsUsername != "-")
             ev.Data.Add("enduser.id", properties.CsUsername);
     }

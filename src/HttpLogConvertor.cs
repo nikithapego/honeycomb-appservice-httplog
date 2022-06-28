@@ -20,3 +20,21 @@ public class LogPropertiesConvertor : JsonConverter<HttpLogProperties>
         throw new NotImplementedException();
     }
 }
+
+
+public class StringToIntConvertor : JsonConverter<int>
+{
+    public override int Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        return reader.TokenType switch {
+            JsonTokenType.Number => reader.GetInt32(),
+            JsonTokenType.String => int.TryParse(reader.GetString(), out var output) ? output : 0,
+            _ => -1
+        };
+    }
+
+    public override void Write(Utf8JsonWriter writer, int value, JsonSerializerOptions options)
+    {
+        throw new NotImplementedException();
+    }
+}

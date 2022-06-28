@@ -1,32 +1,29 @@
 {
     "records": [
         {
-            "category": "AppServiceHTTPLogs",
-            "time": "2022-05-08T20:14:15.0000000",
+            "time": "2022-06-27T23:01:12.0517415Z",
             "resourceId": "/SUBSCRIPTIONS/D8573CE5-2AA6-49AB-8FDE-FC970C5FFCE1/RESOURCEGROUPS/HONEYCOMB/PROVIDERS/MICROSOFT.WEB/SITES/TEST-SITE",
+            "category": "AppServiceHTTPLogs",
             "properties": {
-                "UserAgent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/101.0.4951.54 Safari\/537.36 Edg\/101.0.1210.39",
-                "Cookie": "--",
-                "ScStatus": "200",
-                "CsUsername": "-",
-                "Result": "Success",
-                "CsHost": "test-site.scm.azurewebsites.net",
                 "CsMethod": "GET",
-                "CsBytes": "1635",
-                "CsUriQuery": "_=1652036313179",
+                "CsUriStem": "/worker.js",
+                "SPort": "443",
                 "CIp": "200.154.11.145",
-                "SPort": "80",
-                "Referer": "-",
-                "CsUriStem": "\/api\/vfs\/site\/wwwroot\/",
-                "TimeTaken": 19619,
-                "ScBytes": "494",
+                "UserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36 Edg/101.0.1210.39",
+                "CsHost": "mywebsite.com",
+                "ScStatus": 200,
+                "ScSubStatus": "0",
+                "ScWin32Status": "0",
+                "ScBytes": 4513,
+                "CsBytes": 1564,
+                "TimeTaken": 328,
+                "Result": "Success",
+                "Cookie": "-",
+                "CsUriQuery": "query=test",
+                "CsUsername": "-",
+                "Referer": "https://mywebsite.com/worker.js",
                 "ComputerName": "10-30-0-173"
-            },
-            "EventStampType": "Stamp",
-            "EventPrimaryStampName": "waws-prod-ln1-093",
-            "EventStampName": "waws-prod-ln1-093",
-            "Host": "10-30-0-173",
-            "EventIpAddress": "10.30.0.173"
+            }
         }
     ]
 }
